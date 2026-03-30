@@ -8,6 +8,14 @@ import { Preloader } from '../../components/ui';
 import { FC } from 'react';
 
 export const ConstructorPage: FC = () => (
+  /** TODO: взять переменные из стора */
+  // const isIngredientsLoading = false;
+  // const ingredients = [];
+  // const error = null;
+
+  // if (isIngredientsLoading) return <Preloader />;
+  // if (error) return <div className={`${styles.error} text text_type_main-medium pt-4`}>{error}</div>;
+  // if (!ingredients.length) return <div className={`${styles.title} text text_type_main-medium pt-4`}>Нет ингредиентов</div>;
   <main className={styles.containerMain}>
     <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
       Соберите бургер

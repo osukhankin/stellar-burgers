@@ -1,4 +1,8 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { checkUserAuth } from '../../services/slices/auth-slice';
+import { selectIsAuthChecked } from '../../services/selectors/auth-selectors';
 
 import {
   ConstructorPage,
@@ -23,10 +27,25 @@ import {
   ProtectedRoute
 } from '@components';
 
+import { Preloader } from '@ui';
+
 const App = () => {
+  const dispatch = useDispatch();
+  const isAuthChecked = useSelector(selectIsAuthChecked);
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
+
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, []);
+
+  if (!isAuthChecked)
+    return (
+      <div className={styles.app}>
+        <Preloader />
+      </div>
+    );
 
   return (
     <div className={styles.app}>

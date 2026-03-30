@@ -2,6 +2,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { checkUserAuth } from '@slices';
+import { fetchIngredients } from '@slices';
 import { selectIsAuthChecked } from '../../services/selectors/auth-selectors';
 
 import {
@@ -38,6 +39,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(checkUserAuth());
+    dispatch(fetchIngredients());
   }, []);
 
   if (!isAuthChecked)

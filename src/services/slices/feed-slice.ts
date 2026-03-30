@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getFeedsApi } from '@api';
+import { getFeedsApi, getOrderByNumberApi } from '@api';
 import { TOrder } from '@utils-types';
 
 type TFeedState = {
@@ -8,6 +8,8 @@ type TFeedState = {
   totalToday: number;
   isLoading: boolean;
   error: string | null;
+  selectedOrder: TOrder | null;
+  selectedOrderLoading: boolean;
 };
 
 const initialState: TFeedState = {
@@ -15,12 +17,22 @@ const initialState: TFeedState = {
   total: 0,
   totalToday: 0,
   isLoading: false,
-  error: null
+  error: null,
+  selectedOrder: null,
+  selectedOrderLoading: false
 };
 
 export const fetchFeeds = createAsyncThunk(
   'feed/fetchAll',
   async () => await getFeedsApi()
+);
+
+export const fetchOrderByNumber = createAsyncThunk(
+  'feed/fetchOrderByNumber',
+  async (number: number) => {
+    const data = await getOrderByNumberApi(number);
+    return data.orders[0]; // API возвращает массив, берём первый элемент
+  }
 );
 
 const feedSlice = createSlice({
@@ -42,6 +54,18 @@ const feedSlice = createSlice({
       .addCase(fetchFeeds.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message ?? 'Ошибка загрузки ленты заказов';
+      })
+
+      .addCase(fetchOrderByNumber.pending, (state) => {
+        state.selectedOrderLoading = true;
+        state.selectedOrder = null;
+      })
+      .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
+        state.selectedOrderLoading = false;
+        state.selectedOrder = action.payload;
+      })
+      .addCase(fetchOrderByNumber.rejected, (state) => {
+        state.selectedOrderLoading = false;
       });
   }
 });

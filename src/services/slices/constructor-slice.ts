@@ -55,9 +55,7 @@ const constructorSlice = createSlice({
       ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
       state.ingredients = ingredients;
     },
-    clearOrder: (state) => {
-      state.bun = null;
-      state.ingredients = [];
+    clearOrderModal: (state) => {
       state.orderModalData = null;
     }
   },
@@ -78,7 +76,11 @@ const constructorSlice = createSlice({
   }
 });
 
-export const { addIngredient, removeIngredient, moveIngredient, clearOrder } =
-  constructorSlice.actions;
+export const {
+  addIngredient,
+  removeIngredient,
+  moveIngredient,
+  clearOrderModal
+} = constructorSlice.actions;
 
 export default constructorSlice.reducer;

@@ -9,7 +9,7 @@ import {
   selectOrderRequest,
   selectOrderModalData
 } from '../../services/selectors/constructor-selectors';
-import { createOrder, clearOrder } from '@slices';
+import { clearOrderModal, createOrder } from '@slices';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    dispatch(clearOrder());
+    dispatch(clearOrderModal());
   };
 
   const price = useMemo(

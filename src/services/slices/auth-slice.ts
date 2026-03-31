@@ -5,10 +5,11 @@ import {
   logoutApi,
   getUserApi,
   updateUserApi,
+  getOrdersApi,
   TLoginData,
   TRegisterData
 } from '@api';
-import { TUser } from '@utils-types';
+import { TUser, TOrder } from '@utils-types';
 import { setCookie, deleteCookie } from '../../utils/cookie';
 
 type TAuthState = {
@@ -17,6 +18,8 @@ type TAuthState = {
   isAuthChecked: boolean;
   isLoading: boolean;
   error: string | null;
+  orders: TOrder[];
+  ordersLoading: boolean;
 };
 
 const initialState: TAuthState = {
@@ -24,7 +27,9 @@ const initialState: TAuthState = {
   isAuthenticated: false,
   isAuthChecked: false,
   isLoading: false,
-  error: null
+  error: null,
+  orders: [],
+  ordersLoading: false
 };
 
 // Проверяем токен при старте приложения — залогинен ли пользователь
@@ -58,6 +63,11 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
   deleteCookie('accessToken');
   localStorage.removeItem('refreshToken');
 });
+
+export const fetchUserOrders = createAsyncThunk(
+  'auth/fetchOrders',
+  async () => await getOrdersApi()
+);
 
 export const updateUser = createAsyncThunk(
   'auth/update',
@@ -123,6 +133,18 @@ const authSlice = createSlice({
       // Обновление данных пользователя
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload;
+      })
+
+      // Заказы пользователя
+      .addCase(fetchUserOrders.pending, (state) => {
+        state.ordersLoading = true;
+      })
+      .addCase(fetchUserOrders.fulfilled, (state, action) => {
+        state.ordersLoading = false;
+        state.orders = action.payload;
+      })
+      .addCase(fetchUserOrders.rejected, (state) => {
+        state.ordersLoading = false;
       });
   }
 });

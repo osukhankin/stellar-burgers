@@ -107,47 +107,50 @@ const App = () => {
           }
         />
 
-        <Route
-          path='/feed/:number'
-          element={
-            background ? (
-              <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
-            ) : (
-              <OrderInfo />
-            )
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            background ? (
-              <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
-                <IngredientDetails />
-              </Modal>
-            ) : (
-              <IngredientDetails />
-            )
-          }
-        />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route
           path='/profile/orders/:number'
           element={
             <ProtectedRoute>
-              {background ? (
-                <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
-                  <OrderInfo />
-                </Modal>
-              ) : (
-                <OrderInfo />
-              )}
+              <OrderInfo />
             </ProtectedRoute>
           }
         />
 
         <Route path='*' element={<NotFound404 />} />
       </Routes>
+
+      {background && (
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

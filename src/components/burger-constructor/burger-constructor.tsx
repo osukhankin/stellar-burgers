@@ -9,10 +9,7 @@ import {
   selectOrderRequest,
   selectOrderModalData
 } from '../../services/selectors/constructor-selectors';
-import {
-  createOrder,
-  clearOrder
-} from '@slices';
+import { createOrder, clearOrder } from '@slices';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();

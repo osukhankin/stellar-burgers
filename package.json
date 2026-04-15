@@ -94,6 +94,7 @@
     "format": "prettier ./src --write",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "test:e2e": "cypress run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
